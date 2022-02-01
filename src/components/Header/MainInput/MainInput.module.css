@@ -1,0 +1,144 @@
+input {
+  border: none;
+  /* почему не убралась рамочка? */
+  font-size: 2em;
+  outline: none;
+}
+
+label {
+  display: block;
+}
+
+input::placeholder {
+  font-size: 1.2em;
+  font-style: italic;
+}
+
+.header {
+  position: relative;
+
+  height: 82px;
+  text-align: center;
+  padding-top: 15px;
+  border-radius: inherit;
+  border-bottom: 1px dotted #ccc;
+}
+
+.header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 15px;
+  z-index: 2;
+  border-bottom: 1px solid #6c615c;
+  background: -webkit-linear-gradient(
+    top,
+    rgba(132, 110, 100, 0.8),
+    rgba(101, 84, 76, 0.8)
+  );
+}
+
+.input_header {
+  width: 540px;
+  height: 65px;
+  display: flex;
+  background-color: #fff;
+
+  /* border-bottom: 1px solid; */
+}
+/* 
+.checkbox_header {
+  display: none;
+}
+
+.span {
+  font-size: 28px;
+  color: #d9d9d9;
+  cursor: pointer;
+  padding: 0 17px;
+  transform: rotate(90deg);
+}
+
+:checked + label > .span {
+  color: #737373;
+}
+
+.checkbox_header + label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  margin-top: 50%;
+}
+
+.checkbox_header + .check_all_label::before {
+  content: "";
+  display: inline-block;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 45px;
+  height: 65px;
+  background-color: #fff;
+}
+.checkbox_header + label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+.checkbox_header + .check_all_label::before {
+  content: "";
+  display: inline-block;
+  flex-shrink: 0;
+  flex-grow: 0;
+  width: 45px;
+  height: 65px;
+  background-color: #fff;
+} */
+
+.new_todo {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  line-height: 1.4em;
+  border: 0;
+  padding: 15px;
+}
+
+/* .not_visibility {
+  visibility: hidden;
+} */
+
+.todo {
+  width: 555px;
+  max-height: 330px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.todo_active {
+  position: absolute;
+  left: 10px;
+  top: -125%;
+}
+
+/* стилизация scroll */
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgba(236, 223, 223, 0.5);
+  border-radius: 60px;
+}
+/* ползунок */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(236, 223, 223, 1);
+  border-radius: 60px;
+}
+/* стрелки */
+::-webkit-scrollbar-button:vertical:start:decrement,
+::-webkit-scrollbar-button:vertical:end:increment {
+  background-color: rgba(223, 200, 200, 0.8);
+  border-radius: 60px;
+}

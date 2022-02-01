@@ -1,0 +1,128 @@
+li {
+  list-style-type: none;
+}
+
+.todo_list_item {
+  position: relative;
+  font-size: 24px;
+  border-bottom: 1px dotted #ccc;
+}
+
+.wrapper {
+  width: 540px;
+  height: 65px;
+  display: flex;
+  background-color: #fff;
+}
+
+.wrapper label {
+  background-color: #fff;
+
+  white-space: pre;
+  word-break: break-word;
+
+  display: block;
+  line-height: 1.2;
+  -webkit-transition: color 0.4s;
+  transition: color 0.4s;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox + label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+.checkbox + label::before {
+  content: "✔";
+  cursor: pointer;
+  line-height: 43px;
+  font-size: 20px;
+  display: inline-block;
+  /* width: 38px;
+    height: 55px; */
+  padding-top: 10px;
+  padding-left: 15px;
+  color: #d9d9d9;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50% 50%;
+}
+
+.checkbox:checked + label::before {
+  color: #85ada7;
+  text-shadow: 0 1px 0 #669991;
+  bottom: 1px;
+}
+
+.item_task {
+  position: relative;
+  width: 500px;
+  background-color: #fff;
+  margin-left: 20px;
+  padding: 18px 15px;
+  font-size: 24px;
+}
+.active_task {
+  color: rgb(169, 169, 169);
+  text-decoration: line-through;
+}
+
+.item_task_value {
+  display: block;
+  width: 500px;
+  position: absolute;
+  background-color: #fff;
+  right: -5px;
+  bottom: 5px;
+  opacity: 0;
+}
+.item_task_value_active {
+  display: block;
+  width: 495px;
+  position: absolute;
+  left: 1px;
+  bottom: 0px;
+  opacity: 1;
+  height: 65px;
+  font-size: 24px;
+  color: #4d4d4d;
+  padding: 9px 15px;
+  border: 1px solid #999;
+  box-shadow: inset 0 -1px 5px 0 rgb(0 0 0 / 20%);
+}
+
+.delete {
+  content: "✖";
+  display: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+  font-size: 22px;
+  background-color: #fff;
+  color: #a88a8a;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.delete:hover {
+  text-shadow: 0 0 1px #000, 0 0 10px rgb(199 107 107 / 80%);
+  transform: scale(1.3);
+}
+
+.todo_list_item:hover .delete {
+  display: block;
+}
+
+.sq {
+  width: 30px;
+}

@@ -1,0 +1,39 @@
+
+.main {
+    width: 555px;
+    background: rgba(255, 255, 255, 0.9);
+    margin: 130px 0 40px 0;
+    position: relative;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 15%);
+}
+
+.main::before {
+    content: "";
+    border-left: 1px solid #f5d6d6;
+    border-right: 1px solid #f5d6d6;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 2px;
+    position: absolute;
+    top: 0;
+    left: 45px;
+    /* height: 100vh;    */
+    height: 100%;
+    z-index: 2;
+  }
+
+  .titel {
+    width: 100%;
+    position: absolute;
+    top: -60px;
+    left: 30%;
+    font-size: 70px;
+    font-weight: bold;
+    display: block;
+    color: #b3b3b3;
+    color: rgba(255, 255, 255, 0.3);
+    text-shadow: -1px -1px rgb(0 0 0 / 20%);
+  }
+  

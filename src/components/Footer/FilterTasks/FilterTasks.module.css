@@ -1,0 +1,11 @@
+.btn{
+  border: hidden;
+  color: #83756f;
+  margin: 2px;
+  cursor: pointer;
+  background-color: rgba(236, 223, 223, 0.5);
+}
+
+.active {
+  font-weight: bold;
+}
