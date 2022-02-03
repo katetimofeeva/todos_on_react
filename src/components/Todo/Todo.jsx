@@ -6,7 +6,7 @@ import List from "../TasksList/List/List";
 import Footer from "../Footer/Footer";
 import { addToLS } from "../Utils/Utils";
 import { getLS } from "../Utils/Utils";
-import { postTodo, getResource } from "../Utils/Servise";
+import { postTodo, getResource,   } from "../Utils/Servise";
 
 import style from "./Todo.module.css";
 
@@ -18,35 +18,49 @@ class Todo extends Component {
       visibleTask: [],
       marker: "all",
       isAllTaskCompleted: false,
+       
     };
   }
   updateState = () => {
     getResource("http://localhost:3030").then((res) => {
-      console.log (res)
-      // this.setState({
-      //  todos: res
-      // });
+      this.setState({
+        todos: res,
+      });
+      console.log(res);
     });
   };
+
   deleteItem = (id) => {
-    this.setState({ todos: this.state.todos.filter((item) => item.id !== id) });
+    // console.log(id)
+    postTodo("http://localhost:3030/delete", id);
+    // this.setState({ todos: this.state.todos.filter((item) => item._id !== id) });
+    this.updateState();
   };
 
   //rename +
-  completedTask = (id) => {
-    const { todos } = this.state;
+  completedTask = (id, checked ) => {
+    // const { todos } = this.state;
+    console.log(id);
+    console.log(!checked)
+ 
+    // const newTodos = todos.map((item) => {
+    //   if (item._id === id) {
+    //     return {
+    //       ...item,
+    //       completed: !item.completed,
+    //     };
+    //   }
+    //   return item;
+    // });
+   
+       const callback = async () =>{
+       await postTodo("http://localhost:3030/checked", JSON.stringify({id, checked: !checked }) );
+       }
+       callback()
 
-    const newTodos = todos.map((item) => {
-      if (item.id === id) {
-        return {
-          ...item,
-          completed: !item.completed,
-        };
-      }
-      return item;
-    });
-    this.setState({ todos: newTodos });
-  };
+    this.updateState()
+    // this.setState({ todos: newTodos });
+  }
 
   addTask = (value) => {
     this.setState({
@@ -59,15 +73,17 @@ class Todo extends Component {
         },
       ],
     });
-    // postTodo(
-    //   "http://localhost:3030",
-    //   JSON.stringify({ description: value, completed: false })
-    // );
+    postTodo(
+      "http://localhost:3030",
+      JSON.stringify({ description: value, completed: false })
+    );
     this.updateState();
+    // console.log(this.state.todos)
   };
 
   //rename
   completedAllTasks = (checked) => {
+  
     this.setState(() => ({
       isAllTaskCompleted: checked,
       todos: this.state.todos.map((item) => {
@@ -77,6 +93,7 @@ class Todo extends Component {
         };
       }),
     }));
+   
   };
 
   handleMarkerSelect = (marker) => {
@@ -97,7 +114,7 @@ class Todo extends Component {
   editTask = (value, id) => {
     const { todos } = this.state;
     const newTodos = todos.map((item) => {
-      if (item.id === id) {
+      if (item._id === id) {
         return {
           ...item,
           description: value,
@@ -114,14 +131,17 @@ class Todo extends Component {
   };
 
   componentDidMount() {
-    const todo = getLS("todos")
-    if (todo) {
-      this.setState({
-        todos: JSON.parse(todo),
-        marker: JSON.parse(getLS("marker")),
-      });
+    if (getResource("http://localhost:3030")) {
+      this.updateState();
     }
-   
+
+    // const todo = getLS("todos");
+    // if (todo) {
+    //   this.setState({
+    //     todos: JSON.parse(todo),
+    //     marker: JSON.parse(getLS("marker")),
+    //   });
+    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -159,8 +179,8 @@ class Todo extends Component {
   }
 
   render() {
-    console.log("render-------------------------------------------");
-    const { todos, marker, visibleTask, isAllTaskCompleted, activeLink } =
+    console.log("------------render------------");
+    const { todos, marker, visibleTask, isAllTaskCompleted, activeLink, } =
       this.state;
 
     const counterActiveTasks = todos.filter((item) => !item.completed).length;
@@ -182,6 +202,7 @@ class Todo extends Component {
             deleteItem={this.deleteItem}
             editTask={this.editTask}
             activeLinc={activeLink}
+             
           />
         </section>
 
@@ -199,4 +220,3 @@ class Todo extends Component {
 }
 
 export default Todo;
-

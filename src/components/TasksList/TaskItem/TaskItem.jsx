@@ -11,13 +11,13 @@ class TaskItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeEdit: false, //rename
+      activeInput: false, //rename
       value: this.props.item.description,
     };
   }
 
   onDblCLick = (e) => {
-    this.setState({ activeEdit: true });
+    this.setState({ activeInput: true });
   };
 
   handleChange = (e) => {
@@ -25,56 +25,56 @@ class TaskItem extends Component {
   };
 
   handleBlur = () => {
-    this.setState({ activeEdit: false });
+    this.setState({ activeInput: false });
 
-    this.props.editTask(this.state.value, this.props.item.id);
+    this.props.editTask(this.state.value, this.props.item._id);
   };
 
   handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      this.setState({ activeEdit: false });
-      this.props.editTask(this.state.value, this.props.item.id);
+      this.setState({ activeInput: false });
+      this.props.editTask(this.state.value, this.props.item._id);
     }
   };
   // active_task
 
 
   render() {
-    const { item, completedTask, deleteItem } = this.props;
+    const { item, completedTask, deleteItem,  } = this.props;
 
-    const description = item.description.slice(0, 30);
+    // const description = item.description.slice(0, 30);
     const clazz = item.completed? cn(style.item_task, style.active_task) : style.item_task;
+    const hidden =  this.state.activeInput?  cn(style.item_mark, style.hidden): style.item_mark
     
     //visibility
     return (
       <li className={style.todo_list_item}>
         <div className={style.wrapper}>
-          {this.state.activeEdit ? (
-            <div className={style.sq}></div>
-          ) : (
-            <div className={style.item_mark}>
+                   
+            <div className={hidden}>
               <input
                 type="checkbox"
                 className={style.checkbox}
-                onChange={() => completedTask(item.id)}
+                onChange={() => completedTask(item._id)}
                 checked={item.completed}
+                disabled={this.state.activeInput}
               />
               <label
-                htmlFor={item.id}
+                htmlFor={item._id}
                 className={style.check_all_label}
-                onClick={() => completedTask(item.id)}
+                onClick={() => completedTask(item._id, item.completed)}
               ></label>
             </div>
-          )}
+          
           <div className={clazz} onDoubleClick={this.onDblCLick}>
-            {description}
-            {this.state.activeEdit ? ( //disable
+            {item.description}
+            {this.state.activeInput? ( //disable
               <EditInput
                 handleChange={this.handleChange}
                 value={this.state.value}
                 handleBlur={(id) => this.handleBlur(id)}
                 handleKeyDown={this.handleKeyDown}
-                id={item.id}
+                id={item._id}
               />
             ) : (
               <input
@@ -83,11 +83,11 @@ class TaskItem extends Component {
               />
             )}
           </div>
-          {!this.state.activeEdit && (
+          {!this.state.activeInput && (
             <DeleteButton
               item={this.props.item}
-              key={item.id}
-              deleteItem={(id) => deleteItem(item.id)}
+              key={item._id}
+              deleteItem={(id) => deleteItem(item._id)}
             />
           )}
         </div>

@@ -126,3 +126,7 @@ li {
 .sq {
   width: 30px;
 }
+
+.hidden {
+ visibility: hidden;
+}

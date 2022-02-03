@@ -25,7 +25,9 @@ class Footer extends PureComponent {
       : cn(style.footer, style.not_visibility);
 
     return (
-      <footer className={visibilityFooter}>
+      <footer className={ 
+        visibilityFooter
+        }>
         <span className={style.todo_active}>
           <strong>{counterActiveTasks}</strong> items left
         </span>
@@ -37,7 +39,9 @@ class Footer extends PureComponent {
             handleDeleteAllTask={handleDeleteAllTask}
           />
         </ul>
-        <button className={visibilityBtn} onClick={handleDeleteAllTask}>
+        <button className={
+          visibilityBtn
+          } onClick={handleDeleteAllTask}>
           Clear completed (<strong>{counterCompletedTasks}</strong>)
         </button>
       </footer>
