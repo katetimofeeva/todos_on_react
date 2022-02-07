@@ -11,13 +11,13 @@ class TaskItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeInput: false, //rename
+      isActiveInput: false,  
       value: this.props.item.description,
     };
   }
 
   onDblCLick = (e) => {
-    this.setState({ activeInput: true });
+    this.setState({  isActiveInput: true });
   };
 
   handleChange = (e) => {
@@ -25,28 +25,27 @@ class TaskItem extends Component {
   };
 
   handleBlur = () => {
-    this.setState({ activeInput: false });
+    this.setState({ isActiveInput: false });
 
     this.props.editTask(this.state.value, this.props.item._id);
   };
 
   handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      this.setState({ activeInput: false });
+      this.setState({ isActiveInput: false });
       this.props.editTask(this.state.value, this.props.item._id);
     }
   };
-  // active_task
+ 
 
 
   render() {
     const { item, completedTask, deleteItem,  } = this.props;
 
-    // const description = item.description.slice(0, 30);
-    const clazz = item.completed? cn(style.item_task, style.active_task) : style.item_task;
-    const hidden =  this.state.activeInput?  cn(style.item_mark, style.hidden): style.item_mark
-    
-    //visibility
+    const description = item.description.slice(0, 30);
+    const activeClass = item.completed? cn(style.item_task, style.active_task) : style.item_task;
+    const hidden =  this.state.isActiveInput?  cn(style.item_mark, style.hidden): style.item_mark
+ 
     return (
       <li className={style.todo_list_item}>
         <div className={style.wrapper}>
@@ -57,7 +56,7 @@ class TaskItem extends Component {
                 className={style.checkbox}
                 onChange={() => completedTask(item._id)}
                 checked={item.completed}
-                disabled={this.state.activeInput}
+                disabled={this.state.isActiveInput}
               />
               <label
                 htmlFor={item._id}
@@ -66,9 +65,9 @@ class TaskItem extends Component {
               ></label>
             </div>
           
-          <div className={clazz} onDoubleClick={this.onDblCLick}>
-            {item.description}
-            {this.state.activeInput? ( //disable
+          <div className={activeClass} onDoubleClick={this.onDblCLick}>
+            {description}
+            {this.state.isActiveInput? (  
               <EditInput
                 handleChange={this.handleChange}
                 value={this.state.value}
@@ -83,7 +82,7 @@ class TaskItem extends Component {
               />
             )}
           </div>
-          {!this.state.activeInput && (
+          {!this.state.isActiveInput && (
             <DeleteButton
               item={this.props.item}
               key={item._id}

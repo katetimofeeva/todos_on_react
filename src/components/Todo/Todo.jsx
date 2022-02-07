@@ -1,12 +1,18 @@
-import { Component } from "react";
-import { nanoid } from "nanoid";
+import React, { Component } from "react";
 
 import Header from "../Header/Header";
 import List from "../TasksList/List/List";
 import Footer from "../Footer/Footer";
-import { addToLS } from "../Utils/Utils";
-import { getLS } from "../Utils/Utils";
-import { postTodo, getResource,   } from "../Utils/Servise";
+
+import {
+  getTodos,
+  addTodo,
+  deleteTask,
+  completedTask,
+  completedAllTasks,
+  deleteAllTasks,
+  editTask,
+} from "../Utils/Servise";
 
 import style from "./Todo.module.css";
 
@@ -17,131 +23,66 @@ class Todo extends Component {
       todos: [],
       visibleTask: [],
       marker: "all",
-      isAllTaskCompleted: false,
-       
     };
   }
-  updateState = () => {
-    getResource("http://localhost:3030").then((res) => {
+
+  getTodos = () => {
+    getTodos().then((res) => {
       this.setState({
         todos: res,
       });
-      console.log(res);
     });
   };
 
   deleteItem = (id) => {
-    // console.log(id)
-    postTodo("http://localhost:3030/delete", id);
-    // this.setState({ todos: this.state.todos.filter((item) => item._id !== id) });
-    this.updateState();
+    deleteTask(id);
+
+    this.getTodos();
   };
 
-  //rename +
-  completedTask = (id, checked ) => {
-    // const { todos } = this.state;
-    console.log(id);
-    console.log(!checked)
- 
-    // const newTodos = todos.map((item) => {
-    //   if (item._id === id) {
-    //     return {
-    //       ...item,
-    //       completed: !item.completed,
-    //     };
-    //   }
-    //   return item;
-    // });
-   
-       const callback = async () =>{
-       await postTodo("http://localhost:3030/checked", JSON.stringify({id, checked: !checked }) );
-       }
-       callback()
+  completedTask = (id, checked) => {
+    completedTask(id, checked);
 
-    this.updateState()
-    // this.setState({ todos: newTodos });
-  }
+    this.getTodos();
+  };
 
   addTask = (value) => {
-    this.setState({
-      todos: [
-        ...this.state.todos,
-        {
-          id: nanoid(10),
-          description: value,
-          completed: false,
-        },
-      ],
-    });
-    postTodo(
-      "http://localhost:3030",
-      JSON.stringify({ description: value, completed: false })
-    );
-    this.updateState();
-    // console.log(this.state.todos)
+    addTodo(value);
+    this.getTodos();
   };
 
-  //rename
   completedAllTasks = (checked) => {
-  
-    this.setState(() => ({
-      isAllTaskCompleted: checked,
-      todos: this.state.todos.map((item) => {
-        return {
-          ...item,
-          completed: checked,
-        };
-      }),
-    }));
-   
+    completedAllTasks(checked);
+    this.getTodos();
   };
 
-  handleMarkerSelect = (marker) => {
-    console.log(marker);
-
+  handleClick = (marker) => {
     this.setState({
       marker: marker,
     });
   };
 
   handleDeleteAllTask = () => {
+    deleteAllTasks();
+
+    this.getTodos();
+
     this.setState({
-      todos: this.state.todos.filter((item) => !item.completed),
       marker: "all",
     });
   };
 
   editTask = (value, id) => {
-    const { todos } = this.state;
-    const newTodos = todos.map((item) => {
-      if (item._id === id) {
-        return {
-          ...item,
-          description: value,
-        };
-      }
-      return item;
-    });
+    editTask(value, id);
 
     if (value.trim().length === 0) {
       this.deleteItem(id);
-    } else {
-      this.setState({ todos: newTodos });
     }
+    this.getTodos();
   };
 
   componentDidMount() {
-    if (getResource("http://localhost:3030")) {
-      this.updateState();
-    }
-
-    // const todo = getLS("todos");
-    // if (todo) {
-    //   this.setState({
-    //     todos: JSON.parse(todo),
-    //     marker: JSON.parse(getLS("marker")),
-    //   });
-    // }
+    this.getTodos();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -165,27 +106,23 @@ class Todo extends Component {
           this.setState({ visibleTask: [...this.state.todos] });
           break;
       }
-      addToLS("todos", JSON.stringify(this.state.todos));
-      addToLS("marker", JSON.stringify(this.state.marker));
     }
     if (this.state.todos !== prevState.todos) {
       this.state.todos.every((item) => item.completed)
         ? this.setState({ isAllTaskCompleted: true })
         : this.setState({ isAllTaskCompleted: false });
-
-      addToLS("todos", JSON.stringify(this.state.todos));
-      addToLS("marker", JSON.stringify(this.state.marker));
     }
   }
 
   render() {
     console.log("------------render------------");
-    const { todos, marker, visibleTask, isAllTaskCompleted, activeLink, } =
-      this.state;
+
+    const { todos, visibleTask,  marker } = this.state;
 
     const counterActiveTasks = todos.filter((item) => !item.completed).length;
     const counterCompletedTasks = todos.filter((item) => item.completed).length;
-
+    const isAllCompleted = todos.every((item) => item.completed);
+  
     return (
       <div className={style.todo}>
         <section className={style.main}>
@@ -193,7 +130,7 @@ class Todo extends Component {
             todos={visibleTask}
             addTask={this.addTask}
             completedAllTasks={this.completedAllTasks}
-            isAllTaskCompleted={isAllTaskCompleted}
+            isAllTaskCompleted={isAllCompleted}
           />
 
           <List
@@ -201,15 +138,14 @@ class Todo extends Component {
             completedTask={this.completedTask}
             deleteItem={this.deleteItem}
             editTask={this.editTask}
-            activeLinc={activeLink}
-             
+           
           />
         </section>
 
         <Footer
           counterActiveTasks={counterActiveTasks}
           counterCompletedTasks={counterCompletedTasks}
-          handleMarkerSelect={this.handleMarkerSelect}
+          handleClick={this.handleClick}
           handleDeleteAllTask={this.handleDeleteAllTask}
           todos={todos}
           marker={marker}
