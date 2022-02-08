@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 
+
 import Header from "../Header/Header";
 import List from "../TasksList/List/List";
 import Footer from "../Footer/Footer";
+import store from "../../redux/store";
+import {add} from '../../redux/actions'
+
 
 import {
   getTodos,
@@ -12,9 +16,12 @@ import {
   completedAllTasks,
   deleteAllTasks,
   editTask,
-} from "../Utils/Servise";
+} from "../../Utils/Servise";
 
 import style from "./Todo.module.css";
+
+const {dispatch, subscribe, getState } = store;
+dispatch(add)
 
 class Todo extends Component {
   constructor(props) {
@@ -32,6 +39,8 @@ class Todo extends Component {
         todos: res,
       });
     });
+   
+    
   };
 
   deleteItem = (id) => {
@@ -117,12 +126,12 @@ class Todo extends Component {
   render() {
     console.log("------------render------------");
 
-    const { todos, visibleTask,  marker } = this.state;
+    const { todos, visibleTask, marker } = this.state;
 
     const counterActiveTasks = todos.filter((item) => !item.completed).length;
     const counterCompletedTasks = todos.filter((item) => item.completed).length;
     const isAllCompleted = todos.every((item) => item.completed);
-  
+
     return (
       <div className={style.todo}>
         <section className={style.main}>
@@ -138,7 +147,6 @@ class Todo extends Component {
             completedTask={this.completedTask}
             deleteItem={this.deleteItem}
             editTask={this.editTask}
-           
           />
         </section>
 

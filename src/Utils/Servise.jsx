@@ -1,4 +1,4 @@
-//doFetch(method,url,body)
+ 
 
 const doFetch = async (method, url, data) => {
   try {
@@ -9,8 +9,7 @@ const doFetch = async (method, url, data) => {
       },
       body: data,
     });
-    console.log(res);
-    if (!res.ok) {
+     if (!res.ok) {
       throw new Error(`Could not fetch ${url}, status ${res.status}`);
     }
     return await res.json();
@@ -19,46 +18,15 @@ const doFetch = async (method, url, data) => {
   }
 };
 
-// const postTodo = async (url, data) => {
-//   try {
-//     const res = await fetch(url, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: data,
-//     });
-//     console.log(res);
-//     return await res.json();
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// const getResource = async () => {
-//   try {
-//     let res = await fetch(`http://localhost:3030`);
-
-//     if (!res.ok) {
-//       throw new Error(
-//         `Could not fetch ${`http://localhost:3030`}, status ${res.status}`
-//       );
-//     }
-//     return await res.json();
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 function addTodo(value) {
   const callback = async () => {
     try {
-      const res = await doFetch(
+      await doFetch(
         "POST",
         ` http://${process.env.REACT_APP_URL}`,
         JSON.stringify({ description: value, completed: false })
       );
-      console.log(process.env);
+     
     } catch (error) {
       console.error(error);
     }

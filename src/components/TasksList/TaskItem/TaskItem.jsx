@@ -72,7 +72,7 @@ class TaskItem extends Component {
                 handleChange={this.handleChange}
                 value={this.state.value}
                 handleBlur={(id) => this.handleBlur(id)}
-                handleKeyDown={this.handleKeyDown}
+                handleKeyDown={(id) => this.handleKeyDown (id)}
                 id={item._id}
               />
             ) : (
