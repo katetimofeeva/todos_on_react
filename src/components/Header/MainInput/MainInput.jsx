@@ -1,16 +1,16 @@
 import React from "react";
 import { Component } from "react";
 
-import MainCheckbox from "../MainCheckbox/MainCheckbox";
-
+import MainCheckboxContainer from "../MainCheckbox/MainChecboxContainer";
 import style from "./MainInput.module.css";
 
 class MainInput extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: "",
-    };
+    this.state ={
+      value:''
+    }
+
     this.myRef = React.createRef();
   }
 
@@ -21,17 +21,21 @@ class MainInput extends Component {
   };
 
   handleKeyDown = (e) => {
-    if (e.keyCode === 13 && this.state.value.trim().length !== 0) {
-      this.props.addTask(this.state.value);
-      this.setState({
-        value: "",
-      });
+    let value = e.target.value;
+    if (e.keyCode === 13 && value.trim().length !== 0) {
+      this.props.addTask(e.target.value);
+      // e.target.value= ''
+       this.setState({
+      value: "",
+    })
     }
+   ;
+   
   };
 
   componentDidMount() {
     this.myRef.current.focus();
-     }
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.todos !== prevProps.todos) {
@@ -40,11 +44,13 @@ class MainInput extends Component {
   }
 
   render() {
+   
     return (
       <>
         <header className={style.header}>
           <div className={style.input_header}>
-            <MainCheckbox {...this.props} />
+          <MainCheckboxContainer/>
+            {/* <MainCheckbox {...this.props} /> */}
             <input
               type="text"
               className={style.new_todo}

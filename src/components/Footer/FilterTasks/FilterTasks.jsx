@@ -6,7 +6,7 @@ import cn from "classnames";
 
 class FilterTasks extends Component {
   handleClick = (e) => {
-    this.props.handleClick(e.target.innerText.toLocaleLowerCase());
+    this.props.setmarker(e.target.innerText.toLocaleLowerCase());
   };
 
   render() {

@@ -4,7 +4,7 @@ import style from "../../TaskItem/TaskItem.module.css";
 
 class DeleteButton extends Component {
   handleDeleteItem = () => {
-    this.props.deleteItem(this.props.item._id);
+    this.props.deleteTask(this.props.id);
   };
 
   render() {

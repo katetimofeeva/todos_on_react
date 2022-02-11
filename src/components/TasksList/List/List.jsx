@@ -1,23 +1,36 @@
 import { Component } from "react";
 
-import TaskItem from "../TaskItem/TaskItem";
+import TaskItemContainer from "../TaskItem/TaskItemContainer";
 
 import style from "./List.module.css";
 
 class List extends Component {
   render() {
-    
-    const {   deleteItem, completedTask, editTask, todos } =
-      this.props;
+    const { deleteItem, completedTask, editTask, todos, marker } = this.props;
+    const visibleTask = todos.filter((item) => {
+      switch (marker) {
+        case "active":
+          return !item.completed;
+        case "completed":
+          return item.completed;
+        default:
+          return item;
+      }
+    });
+
+    if (visibleTask.length === 0 && this.props.marker === 'complited') {
+      console.log("ok");
+      this.props.setMarkerAll();
+    }
+
     return (
       <section className={style.todo}>
         <ul className={style.todo_list}>
-          {todos.map((item) => {
+          {visibleTask.map((item) => {
             return (
-              <TaskItem
-                
+              <TaskItemContainer
                 item={item}
-                key={item._id}
+                key={item.id}
                 deleteItem={deleteItem}
                 completedTask={completedTask}
                 editTask={editTask}

@@ -1,7 +1,12 @@
-import { nanoid } from "nanoid";
 
-export const add = (value) => ({
-  type: "TODOS/ADD",
-  description: value,
-  id: nanoid(10)
-});
+export const ADD_TASK = "TODOS/ADD";
+export const DELETE_TASK = 'DELETE_TASK';
+export const TOGGLE_COMPLETE_TASK = 'TOGGLE_COMPLETE_TASK'
+export const EDIT_TASK ='EDIT_TASK'
+export const  COMPLETED_ALL_TASKS = 'COMPLETED_ALL_TASKS'
+ 
+export const DELETE_ALL_TASKS ='DELETE_ALL_TASKS'
+export const SET_MARKER = 'SET_MARKER'
+
+
+ 

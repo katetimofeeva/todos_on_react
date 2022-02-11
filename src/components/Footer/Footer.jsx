@@ -7,14 +7,8 @@ import cn from "classnames";
 
 class Footer extends PureComponent {
   render() {
-    const {
-      counterCompletedTasks,
-      counterActiveTasks,
-      handleClick,
-      todos,
-      handleDeleteAllTask,
-      marker
-    } = this.props;
+    
+    const { setMarker, todos, deleteAllTask, marker } = this.props;
     const visibilityBtn = todos.some((item) => item.completed)
       ? cn(style.clear_completed)
       : cn(style.clear_completed, style.not_visibility);
@@ -22,20 +16,18 @@ class Footer extends PureComponent {
       ? cn(style.footer)
       : cn(style.footer, style.not_visibility);
 
+    const counterActiveTasks = todos.filter((item) => !item.completed).length;
+    const counterCompletedTasks = todos.filter((item) => item.completed).length;
+
     return (
       <footer className={visibilityFooter}>
         <span className={style.todo_active}>
           <strong>{counterActiveTasks}</strong> items left
         </span>
         <ul className={style.footer_buttons}>
-          <FilterTasks
-            handleClick={handleClick}
-            todos={todos}
-            handleDeleteAllTask={handleDeleteAllTask}
-            marker={marker}
-          />
+          <FilterTasks setmarker={setMarker} marker={marker} />
         </ul>
-        <button className={visibilityBtn} onClick={handleDeleteAllTask}>
+        <button className={visibilityBtn} onClick={deleteAllTask}>
           Clear completed (<strong>{counterCompletedTasks}</strong>)
         </button>
       </footer>
